@@ -1,0 +1,22 @@
+{
+  "name": "jovp",
+  "version": "1.0.0",
+  "description": "JSON Object Validation Package",
+  "main": "jovp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omerbenda/JOVP.git"
+  },
+  "keywords": [
+    "JSON"
+  ],
+  "author": "omerbenda",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omerbenda/JOVP/issues"
+  },
+  "homepage": "https://github.com/omerbenda/JOVP#readme"
+}
