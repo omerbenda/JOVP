@@ -21,4 +21,4 @@ const validateFilter = (object, filter) => {
     }); 
 }
 
-export default { validateEqual, validateFilter };
+module.exports = { validateEqual, validateFilter };
