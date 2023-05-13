@@ -1,4 +1,4 @@
-const validateObject = (object, filter) => {
+const validateEqual = (object, filter) => {
     const objKeys = Object.keys(object);
     const filterKeys = Object.keys(filter);
 
@@ -13,4 +13,12 @@ const validateObject = (object, filter) => {
     });
 }
 
-export default { validateObject };
+const validateFilter = (object, filter) => {
+    const filterKeys = Object.keys(filter);
+
+    return filterKeys.every((key) => {
+        return object.hasOwnProperty(key);
+    }); 
+}
+
+export default { validateEqual, validateFilter };
