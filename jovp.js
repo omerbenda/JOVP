@@ -6,10 +6,8 @@ const validateEqual = (object, filter) => {
         return false;
     }
 
-    return objKeys.every((key) => {
-        return filter.hasOwnProperty(key);
-    }) && filterKeys.every((key) => {
-        return object.hasOwnProperty(key);
+    return filterKeys.every((key) => {
+        return typeof object[key] === filter[key];
     });
 }
 
@@ -17,8 +15,8 @@ const validateFilter = (object, filter) => {
     const filterKeys = Object.keys(filter);
 
     return filterKeys.every((key) => {
-        return object.hasOwnProperty(key);
-    }); 
+        return typeof object[key] === filter[key];
+    });
 }
 
-export default { validateEqual, validateFilter };
+module.exports = { validateEqual, validateFilter };

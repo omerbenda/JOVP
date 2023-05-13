@@ -1,10 +1,10 @@
 {
   "name": "jovp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "JSON Object Validation Package",
   "main": "jovp.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/omerbenda/JOVP/issues"
   },
-  "homepage": "https://github.com/omerbenda/JOVP#readme"
+  "homepage": "https://github.com/omerbenda/JOVP#readme",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
 }
