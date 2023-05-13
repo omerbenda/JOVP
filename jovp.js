@@ -34,4 +34,14 @@ const cutToFilter = (object, filter) => {
     return resultObject;
 };
 
-module.exports = { validateEqual, validateMinimal, cutToFilter };
+const validateRules = (object, rulesFilter) => {
+    const filterKeys = Object.keys(rulesFilter);
+
+    return filterKeys.every((key) => {
+        const rule = rulesFilter[key];
+
+        return rule(object[key]);
+    });
+}
+
+module.exports = { validateEqual, validateMinimal, cutToFilter, validateRules };

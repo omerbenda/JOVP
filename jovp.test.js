@@ -1,4 +1,4 @@
-const { validateEqual, validateMinimal, cutToFilter } = require('./jovp.js');
+const { validateEqual, validateMinimal, cutToFilter, validateRules } = require('./jovp.js');
 
 test('validateEqual - empty', () => {
     expect(validateEqual({}, {})).toBe(true);
@@ -74,4 +74,40 @@ test('cutToFilter - value cut', () => {
 
 test('cutToFilter - filter value missing', () => {
     expect(() => cutToFilter({a: 1}, {a: 'number', b: 'number'})).toThrow();
+});
+
+test('validateRules - empty', () => {
+    expect(validateRules({}, {})).toBe(true);
+});
+
+test('validateRules - single numeric rule true', () => {
+    expect(validateRules({a: 1}, {a: (value) => value > 0 && value < 10})).toBe(true);
+});
+
+test('validateRules - single numeric rule false', () => {
+    expect(validateRules({a: 1}, {a: (value) => value < 0 || value > 10})).toBe(false);
+});
+
+test('validateRules - two trues', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value > 0, b: (value) => value.length > 2})).toBe(true);
+});
+
+test('validateRules - two false', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value < 0, b: (value) => value.length < 2})).toBe(false);
+});
+
+test('validateRules - first true second false', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value > 0, b: (value) => value.length < 2})).toBe(false);
+});
+
+test('validateRules - first false second true', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value < 0, b: (value) => value.length > 2})).toBe(false);
+});
+
+test('validateRules - both false', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value < 0, b: (value) => value.length < 2})).toBe(false);
+});
+
+test('validateRules - no rules', () => {
+    expect(validateRules({a: 1, b: 'test'}, {})).toBe(true);
 });
