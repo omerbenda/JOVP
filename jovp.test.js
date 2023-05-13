@@ -1,4 +1,4 @@
-const { validateEqual, validateMinimal } = require('./jovp.js');
+const { validateEqual, validateMinimal, cutToFilter } = require('./jovp.js');
 
 test('validateEqual - empty', () => {
     expect(validateEqual({}, {})).toBe(true);
@@ -6,6 +6,10 @@ test('validateEqual - empty', () => {
 
 test('validateEqual - correct value', () => {
     expect(validateEqual({a: 1}, {a: 'number'})).toBe(true);
+});
+
+test('validateEqual - unordered', () => {
+    expect(validateEqual({a: 1, b: 3}, {b: 'number', a: 'number'})).toBe(true);
 });
 
 test('validateEqual - different key', () => {
@@ -50,4 +54,24 @@ test('validateFilter - filter empty', () => {
 
 test('validateFilter - different type', () => {
     expect(validateMinimal({a: 1}, {a: 'string'})).toBe(false);
+});
+
+test('cutToFilter - empty', () => {
+    expect(cutToFilter({}, {})).toStrictEqual({});
+});
+
+test('cutToFilter - single value', () => {
+    expect(cutToFilter({a: 1}, {a: 'number'})).toEqual({a: 1});
+});
+
+test('cutToFilter - two values', () => {
+    expect(cutToFilter({a: 1, b: 2}, {a: 'number', b: 'number'})).toEqual({a: 1, b: 2});
+});
+
+test('cutToFilter - value cut', () => {
+    expect(cutToFilter({a: 1, b: 2}, {a: 'number'})).toEqual({a: 1});
+});
+
+test('cutToFilter - filter value missing', () => {
+    expect(() => cutToFilter({a: 1}, {a: 'number', b: 'number'})).toThrow();
 });
