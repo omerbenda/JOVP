@@ -1,53 +1,113 @@
-const jovp = require('./jovp');
+const { validateEqual, validateMinimal, cutToFilter, validateRules } = require('./jovp.js');
 
 test('validateEqual - empty', () => {
-    expect(jovp.validateEqual({}, {})).toBe(true);
+    expect(validateEqual({}, {})).toBe(true);
 });
 
 test('validateEqual - correct value', () => {
-    expect(jovp.validateEqual({a: 1}, {a: 'number'})).toBe(true);
+    expect(validateEqual({a: 1}, {a: 'number'})).toBe(true);
+});
+
+test('validateEqual - unordered', () => {
+    expect(validateEqual({a: 1, b: 3}, {b: 'number', a: 'number'})).toBe(true);
 });
 
 test('validateEqual - different key', () => {
-    expect(jovp.validateEqual({a: 1}, {b: 'number'})).toBe(false);
+    expect(validateEqual({a: 1}, {b: 'number'})).toBe(false);
 });
 
 test('validateEqual - object empty', () => {
-    expect(jovp.validateEqual({}, {a: 'string'})).toBe(false);
+    expect(validateEqual({}, {a: 'string'})).toBe(false);
 });
 
 test('validateEqual - filter empty', () => {
-    expect(jovp.validateEqual({a: 1}, {})).toBe(false);
+    expect(validateEqual({a: 1}, {})).toBe(false);
 });
 
 test('validateEqual - different type', () => {
-    expect(jovp.validateEqual({a: 1}, {a: 'string'})).toBe(false);
+    expect(validateEqual({a: 1}, {a: 'string'})).toBe(false);
 });
 
 test('validatefilter - empty', () => {
-    expect(jovp.validateMinimal({}, {})).toBe(true);
+    expect(validateMinimal({}, {})).toBe(true);
 });
 
 test('validateFilter - same value', () => {
-    expect(jovp.validateMinimal({a: 1}, {a: 'number'})).toBe(true);
+    expect(validateMinimal({a: 1}, {a: 'number'})).toBe(true);
 });
 
 test('validateFilter - different value', () => {
-    expect(jovp.validateMinimal({b: 12}, {b: 'number'})).toBe(true);
+    expect(validateMinimal({b: 12}, {b: 'number'})).toBe(true);
 });
 
 test('validateFilter - different key', () => {
-    expect(jovp.validateMinimal({a: 1}, {b: 'number'})).toBe(false);
+    expect(validateMinimal({a: 1}, {b: 'number'})).toBe(false);
 });
 
 test('validateFilter - object empty', () => {
-    expect(jovp.validateMinimal({}, {a: 'number'})).toBe(false);
+    expect(validateMinimal({}, {a: 'number'})).toBe(false);
 });
 
 test('validateFilter - filter empty', () => {
-    expect(jovp.validateMinimal({a: 1}, {})).toBe(true);
+    expect(validateMinimal({a: 1}, {})).toBe(true);
 });
 
 test('validateFilter - different type', () => {
-    expect(jovp.validateMinimal({a: 1}, {a: 'string'})).toBe(false);
+    expect(validateMinimal({a: 1}, {a: 'string'})).toBe(false);
+});
+
+test('cutToFilter - empty', () => {
+    expect(cutToFilter({}, {})).toStrictEqual({});
+});
+
+test('cutToFilter - single value', () => {
+    expect(cutToFilter({a: 1}, {a: 'number'})).toEqual({a: 1});
+});
+
+test('cutToFilter - two values', () => {
+    expect(cutToFilter({a: 1, b: 2}, {a: 'number', b: 'number'})).toEqual({a: 1, b: 2});
+});
+
+test('cutToFilter - value cut', () => {
+    expect(cutToFilter({a: 1, b: 2}, {a: 'number'})).toEqual({a: 1});
+});
+
+test('cutToFilter - filter value missing', () => {
+    expect(() => cutToFilter({a: 1}, {a: 'number', b: 'number'})).toThrow();
+});
+
+test('validateRules - empty', () => {
+    expect(validateRules({}, {})).toBe(true);
+});
+
+test('validateRules - single numeric rule true', () => {
+    expect(validateRules({a: 1}, {a: (value) => value > 0 && value < 10})).toBe(true);
+});
+
+test('validateRules - single numeric rule false', () => {
+    expect(validateRules({a: 1}, {a: (value) => value < 0 || value > 10})).toBe(false);
+});
+
+test('validateRules - two trues', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value > 0, b: (value) => value.length > 2})).toBe(true);
+});
+
+test('validateRules - two false', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value < 0, b: (value) => value.length < 2})).toBe(false);
+});
+
+test('validateRules - first true second false', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value > 0, b: (value) => value.length < 2})).toBe(false);
+});
+
+test('validateRules - first false second true', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value < 0, b: (value) => value.length > 2})).toBe(false);
+});
+
+test('validateRules - both false', () => {
+    expect(validateRules({a: 1, b: 'test'}, {a: (value) => value < 0, b: (value) => value.length < 2})).toBe(false);
+});
+
+test('validateRules - no rules', () => {
+    expect(validateRules({a: 1, b: 'test'}, {})).toBe(true);
 });

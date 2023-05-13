@@ -19,4 +19,29 @@ const validateMinimal = (object, filter) => {
     });
 };
 
-module.exports = { validateEqual, validateMinimal };
+const cutToFilter = (object, filter) => {
+    const resultObject = {};
+    const filterKeys = Object.keys(filter);
+
+    if (!validateMinimal(object, filter)) {
+        throw new Error("Object does not have all of the required keys");
+    }
+    
+    filterKeys.forEach((key) => {
+        resultObject[key] = object[key];
+    });
+
+    return resultObject;
+};
+
+const validateRules = (object, rulesFilter) => {
+    const filterKeys = Object.keys(rulesFilter);
+
+    return filterKeys.every((key) => {
+        const rule = rulesFilter[key];
+
+        return rule(object[key]);
+    });
+}
+
+module.exports = { validateEqual, validateMinimal, cutToFilter, validateRules };
