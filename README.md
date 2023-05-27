@@ -26,6 +26,24 @@ JSON Object Validation Package
 <br> FALSE:
 <code>validateRules({name: 'John', age: 17}, {age: (value) => value > 21})</code>
 
++ validateArrayType
+<br> TRUE:
+<code>validateArrayType([1, 2, 4], 'number')</code>
+<br> FALSE:
+<code>validateArrayType([1, 2, 4], 'string')</code>
+
++ validateObjectArrayFilter
+<br> TRUE:
+<code>validateObjectArrayFilter([{a: 1, b: 2},{b: 3, a: 2}], {a: 'number', b: 'number'})</code>
+<br> FALSE:
+<code>validateObjectArrayFilter([{a: 1, b: 2},{b: 3, a: 2}], { a: 'number', b: 'string' })</code>
+
++ validateArrayRule
+<br> TRUE:
+<code>validateArrayRule([1, 2, 3, 4], (value) => value > 0)</code>
+<br> FALSE:
+<code>validateArrayRule([1, 2, 3, -4], (value) => value > 0)</code>
+
 ---
 
 ### Types
