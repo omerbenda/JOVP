@@ -62,8 +62,24 @@ const validateRules = (object, rulesFilter) => {
   });
 };
 
+const validateArrayType = (array, type) => {
+  if (type === 'jobj') {
+    return array.every((element) => typeof element === 'object' && !Array.isArray(element));
+  }
+
+  if (type === 'array') {
+    return array.every((element) => Array.isArray(element));
+  }
+
+  return array.every((element) => typeof element === type);
+};
+
 const validateObjectArrayFilter = (array, filter) => {
   return array.every((object) => validateEqual(object, filter));
+};
+
+const validateArrayRule = (array, rule) => {
+  return (array.every((element) => rule(element)));
 };
 
 module.exports = {
@@ -72,4 +88,6 @@ module.exports = {
   cutToFilter,
   validateRules,
   validateObjectArrayFilter,
+  validateArrayType,
+  validateArrayRule,
 };
