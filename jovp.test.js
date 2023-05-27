@@ -8,6 +8,18 @@ test('validateEqual - correct value', () => {
     expect(validateEqual({a: 1}, {a: 'number'})).toBe(true);
 });
 
+test('validateEqual - correct value array', () => {
+    expect(validateEqual({a: 1, b: [1, 2, 3]}, {a: 'number', b: 'array'})).toBe(true);
+});
+
+test('validateEqual - object instead of array', () => {
+    expect(validateEqual({a: 1, b: {a: 1, b: 2, c: 3}}, {a: 'number', b: 'array'})).toBe(false);
+});
+
+test('validateEqual - correct value jobj', () => {
+    expect(validateEqual({a: 1, b: {a: 1, b: 2, c: 3}}, {a: 'number', b: 'jobj'})).toBe(true);
+});
+
 test('validateEqual - unordered', () => {
     expect(validateEqual({a: 1, b: 3}, {b: 'number', a: 'number'})).toBe(true);
 });
@@ -28,31 +40,43 @@ test('validateEqual - different type', () => {
     expect(validateEqual({a: 1}, {a: 'string'})).toBe(false);
 });
 
-test('validatefilter - empty', () => {
+test('validateMinimal - empty', () => {
     expect(validateMinimal({}, {})).toBe(true);
 });
 
-test('validateFilter - same value', () => {
+test('validateMinimal - same value', () => {
     expect(validateMinimal({a: 1}, {a: 'number'})).toBe(true);
 });
 
-test('validateFilter - different value', () => {
-    expect(validateMinimal({b: 12}, {b: 'number'})).toBe(true);
-});
-
-test('validateFilter - different key', () => {
+test('validateMinimal - different key', () => {
     expect(validateMinimal({a: 1}, {b: 'number'})).toBe(false);
 });
 
-test('validateFilter - object empty', () => {
+test('validateMinimal - object empty', () => {
     expect(validateMinimal({}, {a: 'number'})).toBe(false);
 });
 
-test('validateFilter - filter empty', () => {
+test('validateMinimal - object', () => {
+    expect(validateMinimal({a: {b: 'test'}}, {a: 'jobj'})).toBe(true);
+});
+
+test('validateMinimal - object instead of array', () => {
+    expect(validateMinimal({a: 'test'}, {a: 'array'})).toBe(false);
+});
+
+test('validateMinimal - array', () => {
+    expect(validateMinimal({a: [1, 2, 3, 4]}, {a: 'array'})).toBe(true);
+});
+
+test('validateMinimal - array instead of object', () => {
+    expect(validateMinimal({a: [1, 2, 3, 4]}, {a: 'jobj'})).toBe(false);
+});
+
+test('validateMinimal - filter empty', () => {
     expect(validateMinimal({a: 1}, {})).toBe(true);
 });
 
-test('validateFilter - different type', () => {
+test('validateMinimal - different type', () => {
     expect(validateMinimal({a: 1}, {a: 'string'})).toBe(false);
 });
 
