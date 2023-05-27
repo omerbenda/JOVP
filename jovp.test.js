@@ -5,6 +5,7 @@ const {
   validateRules,
   validateObjectArrayFilter,
   validateArrayType,
+  validateArrayRule,
 } = require('./jovp.js');
 
 test('validateEqual - empty', () => {
@@ -312,5 +313,35 @@ test('validateArrayType - wrong type start', () => {
 test('validateArrayType - wrong type end', () => {
   expect(
     validateArrayType([1, 2, 'test'], 'number')
+  ).toBe(false);
+});
+
+test('validateArrayRule - all true', () => {
+  expect(
+    validateArrayRule([1, 2, 3, 4], (value) => value > 0)
+  ).toBe(true);
+});
+
+test('validateArrayRule - all false', () => {
+  expect(
+    validateArrayRule([1, 2, 3, 4], (value) => value < 0)
+  ).toBe(false);
+});
+
+test('validateArrayRule - first false', () => {
+  expect(
+    validateArrayRule([-1, 2, 3, 4], (value) => value > 0)
+  ).toBe(false);
+});
+
+test('validateArrayRule - last false', () => {
+  expect(
+    validateArrayRule([1, 2, 3, -4], (value) => value > 0)
+  ).toBe(false);
+});
+
+test('validateArrayRule - middle false', () => {
+  expect(
+    validateArrayRule([1, 2, -3, 4], (value) => value > 0)
   ).toBe(false);
 });
