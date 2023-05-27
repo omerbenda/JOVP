@@ -135,3 +135,19 @@ test('validateRules - both false', () => {
 test('validateRules - no rules', () => {
     expect(validateRules({a: 1, b: 'test'}, {})).toBe(true);
 });
+
+test('validateRules - object filter true', () => {
+    expect(validateRules({a: 1, b: {name: 'John', age: 21}}, {b: (value) => value.age > 18})).toBe(true);
+});
+
+test('validateRules - object filter false', () => {
+    expect(validateRules({a: 1, b: {name: 'John', age: 7}}, {b: (value) => value.age > 18})).toBe(false);
+});
+
+test('validateRules - array filter true', () => {
+    expect(validateRules({a: 1, b: [1, 2, 3, 4]}, {b: (value) => value.every((element) => element > 0)})).toBe(true);
+});
+
+test('validateRules - array filter false', () => {
+    expect(validateRules({a: 1, b: [1, 2, 3, 4, -5, 6]}, {b: (value) => value.every((element) => element > 0)})).toBe(false);
+});
