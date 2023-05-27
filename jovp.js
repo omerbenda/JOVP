@@ -78,6 +78,10 @@ const validateObjectArrayFilter = (array, filter) => {
   return array.every((object) => validateEqual(object, filter));
 };
 
+const validateArrayRule = (array, rule) => {
+  return (array.every((element) => rule(element)));
+};
+
 module.exports = {
   validateEqual,
   validateMinimal,
@@ -85,4 +89,5 @@ module.exports = {
   validateRules,
   validateObjectArrayFilter,
   validateArrayType,
+  validateArrayRule,
 };
