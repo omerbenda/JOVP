@@ -62,4 +62,8 @@ const validateRules = (object, rulesFilter) => {
     });
 };
 
-module.exports = { validateEqual, validateMinimal, cutToFilter, validateRules };
+const validateObjectArrayFilter = (array, filter) => {
+    return array.every((object) => validateEqual(object, filter));
+};
+
+module.exports = { validateEqual, validateMinimal, cutToFilter, validateRules, validateObjectArrayFilter };
