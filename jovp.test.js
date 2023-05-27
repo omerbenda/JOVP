@@ -1,4 +1,4 @@
-const { validateEqual, validateMinimal, cutToFilter, validateRules } = require('./jovp.js');
+const { validateEqual, validateMinimal, cutToFilter, validateRules, validateObjectArrayFilter } = require('./jovp.js');
 
 test('validateEqual - empty', () => {
     expect(validateEqual({}, {})).toBe(true);
@@ -150,4 +150,20 @@ test('validateRules - array filter true', () => {
 
 test('validateRules - array filter false', () => {
     expect(validateRules({a: 1, b: [1, 2, 3, 4, -5, 6]}, {b: (value) => value.every((element) => element > 0)})).toBe(false);
+});
+
+test('validateObjectArrayFilter - all true', () => {
+    expect(validateObjectArrayFilter([{a: 1, b: 2}, {b: 3, a: 2}], {a: 'number', b: 'number'})).toBe(true);
+});
+
+test('validateObjectArrayFilter - all false', () => {
+    expect(validateObjectArrayFilter([{a: 1, b: 2}, {b: 3, a: 2}], {a: 'string', b: 'string'})).toBe(false);
+});
+
+test('validateObjectArrayFilter - true and false', () => {
+    expect(validateObjectArrayFilter([{a: 1, b: 2}, {b: 3, a: 2}], {a: 'number', b: 'string'})).toBe(false);
+});
+
+test('validateObjectArrayFilter - value missing', () => {
+    expect(validateObjectArrayFilter([{a: 1}, {b: 3, a: 2}], {a: 'number', b: 'string'})).toBe(false);
 });
