@@ -7,7 +7,16 @@ const validateEqual = (object, filter) => {
     }
 
     return filterKeys.every((key) => {
-        return typeof object[key] === filter[key];
+        filterValue = filter[key];
+        objectValue = object[key];
+
+        if (filterValue === 'array') {
+            return Array.isArray(objectValue);
+        } else if (filterValue === 'jobj') {
+            return typeof objectValue === 'object' && !Array.isArray(objectValue);
+        }
+
+        return typeof objectValue === filterValue;
     });
 };
 
@@ -15,7 +24,16 @@ const validateMinimal = (object, filter) => {
     const filterKeys = Object.keys(filter);
 
     return filterKeys.every((key) => {
-        return typeof object[key] === filter[key];
+        filterValue = filter[key];
+        objectValue = object[key];
+
+        if (filterValue === 'array') {
+            return Array.isArray(objectValue);
+        } else if (filterValue === 'jobj') {
+            return typeof objectValue === 'object' && !Array.isArray(objectValue);
+        }
+
+        return typeof objectValue === filterValue;
     });
 };
 
@@ -42,6 +60,6 @@ const validateRules = (object, rulesFilter) => {
 
         return rule(object[key]);
     });
-}
+};
 
 module.exports = { validateEqual, validateMinimal, cutToFilter, validateRules };
